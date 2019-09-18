@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+</head>
+<body>
+
+<input id="task"><button id="add">Add</button>
+<div id="todos"></div>
+ 
+
+<script>
+function get_todos() {
+    var todos = new Array;
+    var todos_str = localStorage.getItem('todo');
+    if (todos_str !== null) {
+        todos = JSON.parse(todos_str); 
+    }
+    return todos;
+}
+ 
+function add() {
+    var task = document.getElementById('task').value;
+ 
+    var todos = get_todos();
+    todos.push(task);
+    localStorage.setItem('todo', JSON.stringify(todos));
+ 
+    show();
+ 
+    return false;
+}
+ 
+function remove() {
+    var id = this.getAttribute('id');
+   
+    var todos = get_todos();
+    todos.splice(id, 1);
+    localStorage.setItem('todo', JSON.stringify(todos));
+ 
+    show();
+ 
+    return false;
+}
+function edit() {
+    var id = this.getAttribute('id');
+    
+    var todos = get_todos();
+    todos[id]=document.getElementById('task').value;
+    localStorage.setItem('todo', JSON.stringify(todos));
+ 
+    show();
+ 
+    return false;
+}
+ 
+function show() {
+    var todos = get_todos();
+ 
+    var html = '<ul>';
+    for(var i=0; i<todos.length; i++) {
+        html += '<li>' + todos[i] + '<button class="remove" id="' + i  + '">delete</button></li>'+'<button class="edit" id="' + i  + '">edit</button>';
+    };
+    html += '</ul>';
+ 
+    document.getElementById('todos').innerHTML = html;
+ 
+    var buttons = document.getElementsByClassName('remove');
+    console.log("saikei",buttons)
+    for (var i=0; i < buttons.length; i++) {
+        buttons[i].addEventListener('click', remove);
+    };
+    var buttonedit=document.getElementsByClassName('edit');
+    console.log("saikrishna",buttonedit)
+    for (var i=0; i < buttonedit.length; i++) {
+        buttonedit[i].addEventListener('click', edit);
+    };
+}
+document.getElementById('add').addEventListener('click', add);
+show();
+</script>
+
+<!-- <script>
+// Create a "close" button and append it to each list item
+var arrey_list=["Hit the gym","Pay bills","Meet George","Read a book"];
+var ul=document.createElement("ul");
+
+// ul.style.backgroundColor="red";
+// ul.setAttribute("id","myUL");
+var li;
+var span;
+for (var i = 0; i < arrey_list.length; i++) {
+    li=document.createElement("li");
+    // li.textContent=arrey_list[i];
+    span=document.createElement("span");
+    span.textContent=arrey_list[i];
+    li.appendChild(span);
+    ul.appendChild(li);
+}
+// Create a new list item when clicking on the "Add" button
+var div1=document.createElement("div");
+var x = document.createElement("INPUT");
+x.setAttribute("type", "text");
+x.setAttribute("value", "Hello World!");
+div1.appendChild(x);
+var sub=document.createElement("button");
+sub.setAttribute("type","submit");
+sub.setAttribute("onclick","newElement()");
+sub.textContent="tryit";
+div1.appendChild(sub);
+document.body.appendChild(div1);
+
+function newElement() {
+  var li = document.createElement("li");
+  span=document.createElement("span");
+  
+  
+  if (x.value === '') {
+    alert("You must write something!");
+  } else {
+    span.textContent=x.value;
+    li.appendChild(span);
+    ul.appendChild(li);
+    arrey_list.push(x.value);
+  }
+}
+document.body.appendChild(ul);
+
+// Click on a close button to  srike out the current list item
+
+
+
+ul.addEventListener('click', function(ev) {
+  if (ev.target.tagName === 'SPAN') {
+    // ev.target.classList.toggle('checked');
+    ev.target.style.textDecoration="line-through";
+  }
+}, false);
+// localStorage.setItem("arrey_list", JSON.stringify(arrey_list));
+
+
+
+</script> -->
+
+</body>
+</html>
